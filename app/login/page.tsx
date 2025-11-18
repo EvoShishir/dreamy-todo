@@ -52,10 +52,13 @@ export default function LoginPage() {
 
         const data = await response.json();
         console.log(data);
-        toast.success("Login successful!");
 
-        // Store token or user data if needed
-        // localStorage.setItem('token', data.token);
+        // Store access token in localStorage
+        if (data.access) {
+          localStorage.setItem("access_token", data.access);
+        }
+
+        toast.success("Login successful!");
 
         // Redirect to dashboard or home
         setTimeout(() => {
