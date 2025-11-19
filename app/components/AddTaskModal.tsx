@@ -3,6 +3,7 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { LuX } from "react-icons/lu";
+import Modal from "./Modal";
 
 interface AddTaskModalProps {
   isOpen: boolean;
@@ -57,26 +58,16 @@ export default function AddTaskModal({
     },
   });
 
-  if (!isOpen) return null;
-
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
-        {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-xl font-semibold text-gray-800">
-            {isEdit ? "Edit Task" : "Add New Task"}
-          </h2>
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 transition-colors"
-          >
-            Go Back
-          </button>
-        </div>
-
-        {/* Form */}
-        <form onSubmit={formik.handleSubmit} className="p-6 space-y-5">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title={isEdit ? "Edit Task" : "Add New Task"}
+      size="md"
+      showCloseButton={false}
+    >
+      {/* Form */}
+      <form onSubmit={formik.handleSubmit} className="p-6 space-y-5">
           {/* Title */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -209,7 +200,6 @@ export default function AddTaskModal({
             </button>
           </div>
         </form>
-      </div>
-    </div>
+    </Modal>
   );
 }

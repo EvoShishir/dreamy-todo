@@ -5,6 +5,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
 import { baseUrl } from "../constants";
+import { useUser } from "../contexts/UserContext";
 import AuthLayout from "../components/AuthLayout";
 import FormInput from "../components/FormInput";
 import Link from "next/link";
@@ -25,6 +26,7 @@ const validationSchema = Yup.object({
 
 export default function LoginPage() {
   const router = useRouter();
+  const { fetchUser } = useUser();
 
   const formik = useFormik<FormValues>({
     initialValues: {
@@ -60,10 +62,11 @@ export default function LoginPage() {
 
         toast.success("Login successful!");
 
+        // Fetch user data before redirect
+        await fetchUser();
+
         // Redirect to dashboard or home
-        setTimeout(() => {
-          router.replace("/");
-        }, 1500);
+        router.push("/");
       } catch (error: unknown) {
         toast.error("An error occurred. Please try again.");
       }
