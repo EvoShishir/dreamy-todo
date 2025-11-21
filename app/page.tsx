@@ -15,6 +15,7 @@ import {
   closestCenter,
   KeyboardSensor,
   PointerSensor,
+  TouchSensor,
   useSensor,
   useSensors,
   DragEndEvent,
@@ -67,7 +68,7 @@ function SortableTodoCard({
   };
 
   return (
-    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+    <div ref={setNodeRef} style={style} {...attributes}>
       <TodoCard
         id={todo.id}
         title={todo.title}
@@ -77,6 +78,7 @@ function SortableTodoCard({
         onEdit={onEdit}
         onDelete={onDelete}
         isDragging={isDragging}
+        dragHandleProps={listeners}
       />
     </div>
   );
@@ -106,6 +108,12 @@ export default function TodosPage() {
     useSensor(PointerSensor, {
       activationConstraint: {
         distance: 8,
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 250,
+        tolerance: 5,
       },
     }),
     useSensor(KeyboardSensor, {
@@ -384,129 +392,129 @@ export default function TodosPage() {
 
   return (
     <ProtectedRoute>
-      <DashboardLayout>
-      <div>
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <h1 className="text-3xl font-bold text-gray-800">Todos</h1>
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2.5 bg-[#5272FF] text-white rounded-md font-medium hover:bg-[#3D5AE6] transition-colors"
-          >
-            <LuPlus size={20} />
-            New Task
-          </button>
-        </div>
-
-        {/* Search and Filter */}
-        <div className="flex items-center gap-4 mb-6">
-          <div className="flex-1 relative">
-            <LuSearch
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-              size={20}
-            />
-            <input
-              type="text"
-              placeholder="Search your task here..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#5272FF] focus:border-transparent"
-            />
-          </div>
-          <button
-            onClick={() => setIsFilterModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-2.5 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
-          >
-            Filter By
-            <LuFilter size={16} />
-          </button>
-        </div>
-
-        {/* Task Section */}
-        <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">
-            Your Tasks
-          </h2>
-
-          {todos.length === 0 ? (
-            <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
-              <p className="text-gray-500">
-                {searchQuery
-                  ? "No tasks found matching your search"
-                  : "No tasks yet. Create your first task!"}
-              </p>
-            </div>
-          ) : (
-            <DndContext
-              sensors={sensors}
-              collisionDetection={closestCenter}
-              onDragStart={handleDragStart}
-              onDragEnd={handleDragEnd}
+      <DashboardLayout className="p-8">
+        <div>
+          {/* Header */}
+          <div className="flex items-center justify-between mb-6">
+            <h1 className="text-3xl font-bold text-gray-800">Todos</h1>
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="flex items-center gap-2 px-4 py-2.5 bg-[#5272FF] text-white rounded-md font-medium hover:bg-[#3D5AE6] transition-colors"
             >
-              <SortableContext
-                items={todos.map((todo) => todo.id)}
-                strategy={rectSortingStrategy}
+              <LuPlus size={20} />
+              New Task
+            </button>
+          </div>
+
+          {/* Search and Filter */}
+          <div className="flex items-center gap-4 mb-6">
+            <div className="flex-1 relative">
+              <LuSearch
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                size={20}
+              />
+              <input
+                type="text"
+                placeholder="Search your task here..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#5272FF] focus:border-transparent"
+              />
+            </div>
+            <button
+              onClick={() => setIsFilterModalOpen(true)}
+              className="flex items-center gap-2 px-4 py-2.5 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+            >
+              Filter By
+              <LuFilter size={16} />
+            </button>
+          </div>
+
+          {/* Task Section */}
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">
+              Your Tasks
+            </h2>
+
+            {todos.length === 0 ? (
+              <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
+                <p className="text-gray-500">
+                  {searchQuery
+                    ? "No tasks found matching your search"
+                    : "No tasks yet. Create your first task!"}
+                </p>
+              </div>
+            ) : (
+              <DndContext
+                sensors={sensors}
+                collisionDetection={closestCenter}
+                onDragStart={handleDragStart}
+                onDragEnd={handleDragEnd}
               >
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {todos.map((todo) => (
-                    <div key={todo.id} className="cursor-pointer">
-                      <SortableTodoCard
-                        key={todo.id}
-                        todo={todo}
-                        onEdit={handleEdit}
-                        onDelete={handleDeleteTodo}
+                <SortableContext
+                  items={todos.map((todo) => todo.id)}
+                  strategy={rectSortingStrategy}
+                >
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {todos.map((todo) => (
+                      <div key={todo.id} className="cursor-pointer">
+                        <SortableTodoCard
+                          key={todo.id}
+                          todo={todo}
+                          onEdit={handleEdit}
+                          onDelete={handleDeleteTodo}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </SortableContext>
+                <DragOverlay dropAnimation={dropAnimationConfig}>
+                  {activeTodo ? (
+                    <div className="scale-105 cursor-grabbing shadow-2xl">
+                      <TodoCard
+                        id={activeTodo.id}
+                        title={activeTodo.title}
+                        description={activeTodo.description}
+                        priority={activeTodo.priority}
+                        todo_date={activeTodo.todo_date}
+                        onEdit={() => {}}
+                        onDelete={() => {}}
+                        isDragging={true}
                       />
                     </div>
-                  ))}
-                </div>
-              </SortableContext>
-              <DragOverlay dropAnimation={dropAnimationConfig}>
-                {activeTodo ? (
-                  <div className="scale-105 cursor-grabbing shadow-2xl">
-                    <TodoCard
-                      id={activeTodo.id}
-                      title={activeTodo.title}
-                      description={activeTodo.description}
-                      priority={activeTodo.priority}
-                      todo_date={activeTodo.todo_date}
-                      onEdit={() => {}}
-                      onDelete={() => {}}
-                      isDragging={true}
-                    />
-                  </div>
-                ) : null}
-              </DragOverlay>
-            </DndContext>
-          )}
+                  ) : null}
+                </DragOverlay>
+              </DndContext>
+            )}
+          </div>
         </div>
-      </div>
 
-      {/* Add/Edit Task Modal */}
-      <AddTaskModal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        onSubmit={editingTodo ? handleUpdateTodo : handleCreateTodo}
-        initialValues={
-          editingTodo
-            ? {
-                title: editingTodo.title,
-                description: editingTodo.description,
-                priority: editingTodo.priority,
-                todo_date: editingTodo.todo_date,
-              }
-            : undefined
-        }
-        isEdit={!!editingTodo}
-      />
+        {/* Add/Edit Task Modal */}
+        <AddTaskModal
+          isOpen={isModalOpen}
+          onClose={handleCloseModal}
+          onSubmit={editingTodo ? handleUpdateTodo : handleCreateTodo}
+          initialValues={
+            editingTodo
+              ? {
+                  title: editingTodo.title,
+                  description: editingTodo.description,
+                  priority: editingTodo.priority,
+                  todo_date: editingTodo.todo_date,
+                }
+              : undefined
+          }
+          isEdit={!!editingTodo}
+        />
 
-      {/* Filter Modal */}
-      <FilterModal
-        isOpen={isFilterModalOpen}
-        onClose={() => setIsFilterModalOpen(false)}
-        filters={filters}
-        onApplyFilters={handleApplyFilters}
-      />
-    </DashboardLayout>
+        {/* Filter Modal */}
+        <FilterModal
+          isOpen={isFilterModalOpen}
+          onClose={() => setIsFilterModalOpen(false)}
+          filters={filters}
+          onApplyFilters={handleApplyFilters}
+        />
+      </DashboardLayout>
     </ProtectedRoute>
   );
 }

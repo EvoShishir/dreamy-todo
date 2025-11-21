@@ -1,12 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Sidebar from "./Sidebar";
-import { LuBell, LuCalendar } from "react-icons/lu";
+import { LuBell, LuCalendar, LuMenu } from "react-icons/lu";
 import Image from "next/image";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
+  className?: string;
 }
 
 const getCurrentDate = () => {
@@ -31,15 +32,28 @@ const getDayName = () => {
   return days[today.getDay()];
 };
 
-export default function DashboardLayout({ children }: DashboardLayoutProps) {
+export default function DashboardLayout({
+  children,
+  className = "",
+}: DashboardLayoutProps) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   return (
-    <div className="min-h-screen bg-[#F5F7FA]">
-      <Sidebar />
-      <div className="ml-72">
+    <div className="min-h-dvh bg-[#F5F7FA]">
+      <Sidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
+      <div className="md:ml-72">
         {/* Header */}
         <header className="sticky top-0 z-10 bg-white border-b border-gray-200 px-8 py-6">
           <div className="flex justify-between items-center">
-            <Image src="/logo.png" alt="Logo" width={90} height={90} />
+            <div className="flex items-center gap-4">
+              <button
+                onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                className="md:hidden p-2 bg-[#5272FF] text-white rounded-md hover:bg-[#3D5AE6] transition-colors"
+              >
+                <LuMenu size={20} />
+              </button>
+              <Image src="/logo.png" alt="Logo" width={90} height={90} />
+            </div>
             <div className="flex items-center gap-4">
               <button className="p-2 bg-[#5272FF] text-white rounded-md hover:bg-[#3D5AE6] transition-colors">
                 <LuBell size={20} />
@@ -55,7 +69,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           </div>
         </header>
         {/* Content */}
-        <main className="p-8">{children}</main>
+        <main className={`${className}`}>{children}</main>
       </div>
     </div>
   );

@@ -173,7 +173,7 @@ export default function ProfilePage() {
 
   return (
     <ProtectedRoute>
-      <DashboardLayout>
+      <DashboardLayout className="sm:p-8">
         <div className="bg-white rounded-lg shadow-sm p-8">
           <h1 className="text-2xl font-semibold text-gray-800 mb-6">
             Account Information
@@ -182,8 +182,8 @@ export default function ProfilePage() {
           <form onSubmit={formik.handleSubmit} noValidate>
             {/* Profile Photo Section */}
             <div className="border border-gray-200 rounded-lg p-6 mb-6">
-              <div className="flex items-center gap-4">
-                <div className="relative w-20 h-20 bg-gray-300 rounded-full">
+              <div className="flex flex-col sm:flex-row items-center gap-4">
+                <div className="relative w-50 h-50 sm:w-20 sm:h-20 bg-gray-300 rounded-full">
                   {profileImage ? (
                     <Image
                       src={profileImage}
@@ -352,7 +352,7 @@ export default function ProfilePage() {
                   disabled={formik.isSubmitting}
                   className="px-8 py-2.5 bg-[#5272FF] text-white rounded-md font-medium hover:bg-[#3D5AE6] disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {formik.isSubmitting ? "Saving..." : "Save Changes"}
+                  {formik.isSubmitting ? "Saving..." : "Save"}
                 </button>
                 <button
                   type="button"

@@ -39,14 +39,14 @@ export default function Modal({
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <h2 className="text-xl font-semibold text-gray-800">{title}</h2>
-          {showCloseButton && (
-            <button
-              onClick={onClose}
-              className="p-1 hover:bg-gray-100 rounded transition-colors"
-            >
-              <LuX size={20} />
-            </button>
-          )}
+          {/* {showCloseButton && ( */}
+          <button
+            onClick={onClose}
+            className="p-1 hover:bg-gray-100 rounded transition-colors"
+          >
+            <LuX size={20} />
+          </button>
+          {/* // )} */}
         </div>
 
         {/* Content */}

@@ -9,6 +9,7 @@ interface TodoCardProps {
   onEdit: (id: number) => void;
   onDelete: (id: number) => void;
   isDragging?: boolean;
+  dragHandleProps?: any;
 }
 
 const priorityConfig = {
@@ -26,6 +27,7 @@ export default function TodoCard({
   onEdit,
   onDelete,
   isDragging,
+  dragHandleProps,
 }: TodoCardProps) {
   const priorityStyle = priorityConfig[priority];
 
@@ -47,7 +49,10 @@ export default function TodoCard({
     >
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-start gap-2 flex-1">
-          <button className="cursor-grab active:cursor-grabbing mt-1 text-gray-400 hover:text-gray-600 transition-colors">
+          <button
+            {...dragHandleProps}
+            className="cursor-grab active:cursor-grabbing mt-1 text-gray-400 hover:text-gray-600 transition-colors touch-none"
+          >
             <LuGripVertical size={20} />
           </button>
           <div className="flex-1">
