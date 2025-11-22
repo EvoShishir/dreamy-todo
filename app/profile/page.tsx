@@ -198,16 +198,16 @@ export default function ProfilePage() {
                   )}
                   <button
                     type="button"
-                    className="absolute bottom-0 right-0 bg-[#5272FF] text-white rounded-full p-1.5 hover:bg-[#3D5AE6]"
+                    className="absolute bottom-0 right-0 bg-[#5272FF] text-white rounded-full p-2 hover:bg-[#3D5AE6] cursor-pointer"
                     onClick={handleUploadClick}
                   >
-                    <LuCamera size={12} />
+                    <LuCamera className="w-10 h-10 sm:w-3 sm:h-3" />
                   </button>
                 </div>
                 <button
                   type="button"
                   onClick={handleUploadClick}
-                  className="px-4 py-2 bg-[#5272FF] text-white rounded-md text-sm font-medium hover:bg-[#3D5AE6] flex items-center gap-2"
+                  className="px-4 py-2 bg-[#5272FF] text-white rounded-md text-sm font-medium hover:bg-[#3D5AE6] flex items-center gap-2 cursor-pointer"
                 >
                   <LuUpload size={16} />
                   Upload New Photo
@@ -350,7 +350,7 @@ export default function ProfilePage() {
                 <button
                   type="submit"
                   disabled={formik.isSubmitting}
-                  className="px-8 py-2.5 bg-[#5272FF] text-white rounded-md font-medium hover:bg-[#3D5AE6] disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-8 py-2.5 bg-[#5272FF] text-white rounded-md font-medium hover:bg-[#3D5AE6] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 >
                   {formik.isSubmitting ? "Saving..." : "Save"}
                 </button>
@@ -358,7 +358,7 @@ export default function ProfilePage() {
                   type="button"
                   onClick={handleCancel}
                   disabled={formik.isSubmitting}
-                  className="px-8 py-2.5 bg-gray-300 text-gray-700 rounded-md font-medium hover:bg-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="px-8 py-2.5 bg-gray-300 text-gray-700 rounded-md font-medium hover:bg-gray-400 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 >
                   Cancel
                 </button>
